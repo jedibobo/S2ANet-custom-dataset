@@ -14,12 +14,18 @@ Two versions are provided here: [Original version](https://github.com/csuhan/s2a
 As there is a need for me to run S2ANet on UCAS_AOD. However, there is no present work to do this. This repo is both a tutorial and an extension to original project [S2ANet](https://github.com/csuhan/s2anet/tree/pytorch1.9). Besides, I used [UCAS-AOD-benchmark](https://github.com/ming71/UCAS-AOD-benchmark) to prepare for dataset.
 
 The main problems this repo solved are:
-- [√] custom dataset training(UCAS_AOD as an example)
-- [√] change the backbone to ResNeXt to gain more performance.
-- [√] a tutorial for begineers in remote-sensing
-- [√] provide some pretrained models with baidu Netdisk
+- [x] custom dataset training(UCAS_AOD as an example)
+- [x] change the backbone to ResNeXt101x64_4d to gain more performance.(this pretrain model is provided in the link below, after downloading, move it to torch pretrain cache dir)
+- [x] a tutorial for begineers in remote-sensing
+- [x] provide some pretrained models with baidu Netdisk
 - [ ] align the accuracy provided in [UCAS-AOD-benchmark](https://github.com/ming71/UCAS-AOD-benchmark) (The Reason might be training params for I only have RTX3060 12G)
 
+## Results for UCAS_AOD
+|  class   | ap  |
+|  ----  | ----  |
+| car  | 80.75557185 |
+| airplane  | 90.64514424 |
+pretrained model file can be downloaded [here](https://pan.baidu.com/s/1YPeQjtGmXZQhuHWGC3DaMg). code: 0lsj 
 ## Tutorial for custom training
 files to be added :
 - DOTA_devkit/ucas_aod_evaluation.py
