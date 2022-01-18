@@ -1,11 +1,13 @@
 # model settings
 model = dict(
     type='CascadeS2ANetDetector',
-    pretrained='torchvision://resnet50',
+    pretrained='/root/.cache/torch/hub/checkpoints/resnext101_64x4d-ee2c6f71_2.pth',
     num_stages=2,
     backbone=dict(
-        type='ResNet',
-        depth=50,
+        type='ResNeXt',
+        depth=101,
+        groups=64,
+        base_width=4,
         num_stages=4,
         out_indices=(0, 1, 2, 3),
         frozen_stages=1,
@@ -20,7 +22,7 @@ model = dict(
     bbox_head=[
         dict(
             type='CascadeS2ANetHead',
-            num_classes=2,
+            num_classes=3,
             in_channels=256,
             feat_channels=256,
             stacked_convs=2,
@@ -105,14 +107,14 @@ test_cfg = dict(
     nms=dict(type='nms_rotated', iou_thr=0.1),
     max_per_img=2000)
 # dataset settings
-dataset_type = 'HRSC2016Dataset'
-data_root = 'data/HRSC2016/'
+dataset_type = 'UCASAODDataset'
+data_root = 'data/UCAS_AOD/'
 img_norm_cfg = dict(
     mean=[123.675, 116.28, 103.53], std=[58.395, 57.12, 57.375], to_rgb=True)
 train_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(type='LoadAnnotations', with_bbox=True),
-    dict(type='RotatedResize', img_scale=(800, 512), keep_ratio=True),
+    dict(type='RotatedResize', img_scale=(800, 800), keep_ratio=True),
     dict(type='RotatedRandomFlip', flip_ratio=0.5),
     dict(type='RandomRotate', rate=0.5, angles=[30, 60, 90, 120, 150], auto_bound=False),
     dict(type='Normalize', **img_norm_cfg),
@@ -124,7 +126,7 @@ test_pipeline = [
     dict(type='LoadImageFromFile'),
     dict(
         type='MultiScaleFlipAug',
-        img_scale=(800, 512),
+        img_scale=(800, 800),
         flip=False,
         transforms=[
             dict(type='RotatedResize', keep_ratio=True),
@@ -137,27 +139,27 @@ test_pipeline = [
 ]
 data = dict(
     imgs_per_gpu=2,
-    workers_per_gpu=2,
+    workers_per_gpu=8,
     train=dict(
         type=dataset_type,
-        ann_file=data_root + 'Train/train.txt',
-        img_prefix=data_root + 'Train/',
+        ann_file=data_root + 'ImageSets/trainval.txt',
+        img_prefix=data_root + 'AllImages/',
         pipeline=train_pipeline),
     val=dict(
         type=dataset_type,
-        ann_file=data_root + 'Test/test.txt',
-        img_prefix=data_root + 'Test/',
+        ann_file=data_root + 'ImageSets/test.txt',
+        img_prefix=data_root + 'AllImages/',
         pipeline=test_pipeline),
     test=dict(
         type=dataset_type,
-        ann_file=data_root + 'Test/test.txt',
-        img_prefix=data_root + 'Test/',
+        ann_file=data_root + 'ImageSets/test.txt',
+        img_prefix=data_root + 'AllImages/',
         pipeline=test_pipeline))
 evaluation = dict(
-    gt_dir='data/HRSC2016/Test/Annotations/',
-    imagesetfile='data/HRSC2016/Test/test.txt')
+    gt_dir='data/UCAS_AOD/Annotations/',
+    imagesetfile='data/UCAS_AOD/ImageSets/test.txt')
 # optimizer
-optimizer = dict(type='SGD', lr=0.01, momentum=0.9, weight_decay=0.0001)
+optimizer = dict(type='SGD', lr=0.0025, momentum=0.9, weight_decay=0.0001)
 optimizer_config = dict(grad_clip=dict(max_norm=35, norm_type=2))
 # learning policy
 lr_config = dict(

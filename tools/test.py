@@ -125,7 +125,7 @@ def parse_args():
     # add dataset type for more dataset eval other than coco
     parser.add_argument(
         '--data',
-        choices=['coco', 'dota', 'dota_large', 'dota_hbb', 'hrsc2016', 'voc'],
+        choices=['coco', 'dota', 'dota_large', 'dota_hbb', 'hrsc2016', 'voc','ucas_aod'],
         default='dota',
         type=str,
         help='eval dataset type')
@@ -216,7 +216,7 @@ def main():
                                                         result_file)
                             coco_eval(result_files, eval_types, dataset.coco)
 
-        elif data_name in ['dota', 'hrsc2016']:
+        elif data_name in ['dota', 'hrsc2016','ucas_aod']:
             eval_kwargs = cfg.get('evaluation', {}).copy()
             work_dir = osp.dirname(args.out)
             dataset.evaluate(outputs, work_dir, **eval_kwargs)

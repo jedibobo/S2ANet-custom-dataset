@@ -11,11 +11,11 @@ from .xml_style import XMLDataset
 
 from .hrsc2016 import HRSC2016Dataset
 from .dota import DotaDataset
-
+from .UCAS_AOD import UCASAODDataset
 __all__ = [
     'CustomDataset', 'XMLDataset', 'CocoDataset', 'VOCDataset',
     'CityscapesDataset', 'GroupSampler', 'DistributedGroupSampler',
     'build_dataloader', 'ConcatDataset', 'RepeatDataset',
     'WIDERFaceDataset', 'DATASETS', 'build_dataset',
-    'HRSC2016Dataset','DotaDataset'
+    'HRSC2016Dataset','DotaDataset','UCASAODDataset'
 ]
